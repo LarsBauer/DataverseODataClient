@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DataverseODataClient.Auth
 {
-    internal class DataverseTokenProvider : AzureIdentityTokenProvider
+    public class DataverseTokenProvider : AzureIdentityTokenProvider
     {
         private const string DefaultScope = "/.default";
 

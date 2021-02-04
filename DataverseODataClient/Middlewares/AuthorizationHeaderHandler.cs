@@ -6,7 +6,7 @@ using DataverseODataClient.Auth;
 
 namespace DataverseODataClient.Middlewares
 {
-    internal class AuthorizationHeaderHandler : DelegatingHandler
+    public class AuthorizationHeaderHandler : DelegatingHandler
     {
         private readonly ITokenProvider _tokenProvider;
 

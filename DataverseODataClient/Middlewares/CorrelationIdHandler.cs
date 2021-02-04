@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace DataverseODataClient.Middlewares
 {
-    internal class CorrelationIdHandler : DelegatingHandler
+    public class CorrelationIdHandler : DelegatingHandler
     {
         private const string CorrelationIdHeader = "x-correlation-id";
         private const string CorrelationIdQueryParameter = "tag";
