@@ -1,6 +1,7 @@
 ﻿using System;
 using Azure.Core;
 using Azure.Identity;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
 namespace BauerApps.DataverseODataClient.Auth
@@ -9,9 +10,9 @@ namespace BauerApps.DataverseODataClient.Auth
     {
         private const string DefaultScope = "/.default";
 
-        public DataverseTokenProvider(IOptions<DataverseODataClientOptions> options,
+        public DataverseTokenProvider(IOptions<DataverseODataClientOptions> options, IMemoryCache cache,
             TokenCredential tokenCredential = null)
-            : base(ConfigureScopes(options.Value), tokenCredential ?? ConfigureTokenCredential(options.Value))
+            : base(ConfigureScopes(options.Value), tokenCredential ?? ConfigureTokenCredential(options.Value), cache)
         {
         }
 
