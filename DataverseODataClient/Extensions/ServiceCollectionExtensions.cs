@@ -2,9 +2,8 @@
 using DataverseODataClient.Auth;
 using DataverseODataClient.Middlewares;
 using DataverseODataClient.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Simple.OData.Client;
 
 namespace DataverseODataClient.Extensions
@@ -13,8 +12,11 @@ namespace DataverseODataClient.Extensions
     {
         private const string WebApiPath = "/api/data/v9.1/";
 
-        public static IServiceCollection AddODataClient(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDataverseODataClient(this IServiceCollection services,
+            Action<DataverseODataClientOptions> options)
         {
+            services.Configure(options);
+
             // token provider
             services.AddSingleton<ITokenProvider, DataverseTokenProvider>();
 
@@ -26,9 +28,9 @@ namespace DataverseODataClient.Extensions
             services.AddTransient<CorrelationIdHandler>();
 
             // configure HttpClient
-            services.AddHttpClient<ODataClientSettings, ODataClientSettings>(client =>
+            services.AddHttpClient<ODataClientSettings, ODataClientSettings>((provider, client) =>
                 {
-                    client.BaseAddress = GetWebApiEndpoint(configuration);
+                    client.BaseAddress = GetWebApiEndpoint(provider);
                 })
                 .AddHttpMessageHandler<AuthorizationHeaderHandler>()
                 .AddHttpMessageHandler<CorrelationIdHandler>();
@@ -39,9 +41,10 @@ namespace DataverseODataClient.Extensions
             return services;
         }
 
-        private static Uri GetWebApiEndpoint(IConfiguration configuration)
+        private static Uri GetWebApiEndpoint(IServiceProvider serviceProvider)
         {
-            var organizationUrl = configuration.GetValue<Uri>("OrganizationUrl");
+            var options = serviceProvider.GetRequiredService<IOptions<DataverseODataClientOptions>>();
+            var organizationUrl = options.Value.OrganizationUrl;
 
             return organizationUrl.LocalPath == WebApiPath
                 ? organizationUrl

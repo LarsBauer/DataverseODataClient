@@ -1,7 +1,8 @@
 ﻿using System;
 using Azure.Core;
 using Azure.Identity;
-using Microsoft.Extensions.Configuration;
+using DataverseODataClient.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace DataverseODataClient.Auth
 {
@@ -9,25 +10,24 @@ namespace DataverseODataClient.Auth
     {
         private const string DefaultScope = "/.default";
 
-        public DataverseTokenProvider(IConfiguration configuration, TokenCredential tokenCredential = null)
-            : base(ConfigureScopes(configuration), tokenCredential ?? ConfigureTokenCredential(configuration))
+        public DataverseTokenProvider(IOptions<DataverseODataClientOptions> options,
+            TokenCredential tokenCredential = null)
+            : base(ConfigureScopes(options.Value), tokenCredential ?? ConfigureTokenCredential(options.Value))
         {
         }
 
-        private static string[] ConfigureScopes(IConfiguration configuration)
+        private static string[] ConfigureScopes(DataverseODataClientOptions options)
         {
-            var organizationUrl = configuration.GetValue<Uri>("OrganizationUrl");
-
             // required token scope for Dataverse Web API is https://<organizationName>.crm.dynamics.com/.default
-            var baseUrl = new Uri(organizationUrl.GetLeftPart(UriPartial.Authority));
+            var baseUrl = new Uri(options.OrganizationUrl.GetLeftPart(UriPartial.Authority));
             var scope = new Uri(baseUrl, DefaultScope).AbsoluteUri;
 
             return new[] { scope };
         }
 
-        private static TokenCredential ConfigureTokenCredential(IConfiguration configuration)
+        private static TokenCredential ConfigureTokenCredential(DataverseODataClientOptions options)
         {
-            var userAssignedClientId = configuration.GetValue<string>("ManagedIdentityClientId");
+            var userAssignedClientId = options.ManagedIdentityClientId;
             // we have to specify client id when using user-assigned managed identities
             return string.IsNullOrWhiteSpace(userAssignedClientId)
                 ? new DefaultAzureCredential()

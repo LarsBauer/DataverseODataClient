@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Core;
 using DataverseODataClient.Auth;
+using DataverseODataClient.Extensions;
 using FakeItEasy;
 using FluentAssertions;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace DataverseODataClient.Tests.Auth
@@ -17,20 +17,17 @@ namespace DataverseODataClient.Tests.Auth
         public async Task ShouldReturnAcessToken()
         {
             // Arrange
-            const string organizationUrl = "https://my-organization.crm4.dynamics.com";
-            var configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string>
-                {
-                    { "OrganizationUrl", organizationUrl }
-                })
-                .Build();
+            var options = Options.Create(new DataverseODataClientOptions
+            {
+                OrganizationUrl = new Uri("https://my-organization.crm4.dynamics.com")
+            });
 
             var accessToken = new AccessToken("123", DateTimeOffset.MaxValue);
             var credential = A.Fake<TokenCredential>();
             A.CallTo(() => credential.GetTokenAsync(A<TokenRequestContext>._, A<CancellationToken>._))
                 .Returns(accessToken);
 
-            var sut = new DataverseTokenProvider(configuration, credential);
+            var sut = new DataverseTokenProvider(options, credential);
             // Act
             var token = await sut.GetTokenAsync();
 
@@ -42,20 +39,17 @@ namespace DataverseODataClient.Tests.Auth
         public async Task ShouldCacheAccessTokenWhenRequestedMultipleTimes()
         {
             // Arrange
-            const string organizationUrl = "https://my-organization.crm4.dynamics.com";
-            var configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string>
-                {
-                    { "OrganizationUrl", organizationUrl }
-                })
-                .Build();
+            var options = Options.Create(new DataverseODataClientOptions
+            {
+                OrganizationUrl = new Uri("https://my-organization.crm4.dynamics.com")
+            });
 
             var accessToken = new AccessToken("123", DateTimeOffset.MaxValue);
             var credential = A.Fake<TokenCredential>();
             A.CallTo(() => credential.GetTokenAsync(A<TokenRequestContext>._, A<CancellationToken>._))
                 .Returns(accessToken);
 
-            var sut = new DataverseTokenProvider(configuration, credential);
+            var sut = new DataverseTokenProvider(options, credential);
 
             // Act
             await sut.GetTokenAsync();
@@ -71,13 +65,10 @@ namespace DataverseODataClient.Tests.Auth
         public async Task ShouldRefreshAccessTokenWhenAccessTokenIsExpired()
         {
             // Arrange
-            const string organizationUrl = "https://my-organization.crm4.dynamics.com";
-            var configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string>
-                {
-                    { "OrganizationUrl", organizationUrl }
-                })
-                .Build();
+            var options = Options.Create(new DataverseODataClientOptions
+            {
+                OrganizationUrl = new Uri("https://my-organization.crm4.dynamics.com")
+            });
 
             var oldToken = new AccessToken("123", DateTimeOffset.UtcNow);
             var newToken = new AccessToken("123", DateTimeOffset.MaxValue);
@@ -88,7 +79,7 @@ namespace DataverseODataClient.Tests.Auth
                 .Then
                 .Returns(newToken);
 
-            var sut = new DataverseTokenProvider(configuration, credential);
+            var sut = new DataverseTokenProvider(options, credential);
 
             // Act
             await sut.GetTokenAsync();
