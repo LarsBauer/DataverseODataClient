@@ -2,14 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Core;
-using DataverseODataClient.Auth;
-using DataverseODataClient.Extensions;
+using BauerApps.DataverseODataClient.Auth;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Xunit;
 
-namespace DataverseODataClient.Tests.Auth
+namespace BauerApps.DataverseODataClient.Tests.Auth
 {
     public class DataverseTokenProviderTests
     {
@@ -28,6 +27,7 @@ namespace DataverseODataClient.Tests.Auth
                 .Returns(accessToken);
 
             var sut = new DataverseTokenProvider(options, credential);
+
             // Act
             var token = await sut.GetTokenAsync();
 

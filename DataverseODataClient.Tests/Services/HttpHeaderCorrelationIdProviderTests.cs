@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using DataverseODataClient.Services;
+using BauerApps.DataverseODataClient.Services;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Xunit;
 
-namespace DataverseODataClient.Tests.Services
+namespace BauerApps.DataverseODataClient.Tests.Services
 {
     public class HttpHeaderCorrelationIdProviderTests
     {

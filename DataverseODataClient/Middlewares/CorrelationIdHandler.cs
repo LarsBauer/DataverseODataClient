@@ -2,10 +2,10 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using DataverseODataClient.Services;
+using BauerApps.DataverseODataClient.Services;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace DataverseODataClient.Middlewares
+namespace BauerApps.DataverseODataClient.Middlewares
 {
     internal class CorrelationIdHandler : DelegatingHandler
     {

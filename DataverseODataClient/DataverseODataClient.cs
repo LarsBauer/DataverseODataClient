@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using Simple.OData.Client;
 
-namespace DataverseODataClient
+namespace BauerApps.DataverseODataClient
 {
     // this class is needed to enable dependency injection of ODataClientSettings
     public class DataverseODataClient : ODataClient

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataverseODataClient
+namespace BauerApps.DataverseODataClient
 {
     /// <summary>
     /// Dataverse OData client configuration options

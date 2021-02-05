@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azure.Core;
 
-namespace DataverseODataClient.Auth
+namespace BauerApps.DataverseODataClient.Auth
 {
     internal abstract class AzureIdentityTokenProvider : ITokenProvider
     {

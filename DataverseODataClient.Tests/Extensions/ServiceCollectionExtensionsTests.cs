@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Net.Http;
-using DataverseODataClient.Auth;
-using DataverseODataClient.Extensions;
-using DataverseODataClient.Middlewares;
-using DataverseODataClient.Services;
+using BauerApps.DataverseODataClient.Auth;
+using BauerApps.DataverseODataClient.Extensions;
+using BauerApps.DataverseODataClient.Middlewares;
+using BauerApps.DataverseODataClient.Services;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Simple.OData.Client;
 using Xunit;
 
-namespace DataverseODataClient.Tests.Extensions
+namespace BauerApps.DataverseODataClient.Tests.Extensions
 {
     public class ServiceCollectionExtensionsTests
     {
@@ -37,7 +37,7 @@ namespace DataverseODataClient.Tests.Extensions
             sut.Should().Contain(x => x.ServiceType == typeof(CorrelationIdHandler));
             sut.Should().Contain(x => x.ServiceType == typeof(IHttpClientFactory));
             sut.Should().Contain(x =>
-                x.ServiceType == typeof(IODataClient) && x.ImplementationType == typeof(DataverseODataClient));
+                x.ServiceType == typeof(IODataClient) && x.ImplementationType == typeof(BauerApps.DataverseODataClient.DataverseODataClient));
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace DataverseODataClient.Tests.Extensions
             // Assert
             var provider = sut.BuildServiceProvider();
             var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
-            var httpClient = httpClientFactory.CreateClient(nameof(DataverseODataClient));
+            var httpClient = httpClientFactory.CreateClient(nameof(BauerApps.DataverseODataClient.DataverseODataClient));
 
             httpClient.BaseAddress.Should().Be("https://my-organization.crm4.dynamics.com/api/data/v9.1/");
         }

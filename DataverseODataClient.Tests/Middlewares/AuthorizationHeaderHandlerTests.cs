@@ -3,13 +3,13 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Core;
-using DataverseODataClient.Auth;
-using DataverseODataClient.Middlewares;
+using BauerApps.DataverseODataClient.Auth;
+using BauerApps.DataverseODataClient.Middlewares;
 using FakeItEasy;
 using FluentAssertions;
 using Xunit;
 
-namespace DataverseODataClient.Tests.Middlewares
+namespace BauerApps.DataverseODataClient.Tests.Middlewares
 {
     public class AuthorizationHeaderHandlerTests : DelegatingHandlerTest
     {

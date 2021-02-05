@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DataverseODataClient.Tests.Middlewares
+namespace BauerApps.DataverseODataClient.Tests.Middlewares
 {
     public abstract class DelegatingHandlerTest
     {

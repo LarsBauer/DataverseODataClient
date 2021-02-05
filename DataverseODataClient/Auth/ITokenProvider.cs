@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Azure.Core;
 
-namespace DataverseODataClient.Auth
+namespace BauerApps.DataverseODataClient.Auth
 {
     public interface ITokenProvider
     {

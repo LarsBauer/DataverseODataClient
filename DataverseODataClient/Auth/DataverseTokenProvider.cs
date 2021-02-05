@@ -3,7 +3,7 @@ using Azure.Core;
 using Azure.Identity;
 using Microsoft.Extensions.Options;
 
-namespace DataverseODataClient.Auth
+namespace BauerApps.DataverseODataClient.Auth
 {
     internal class DataverseTokenProvider : AzureIdentityTokenProvider
     {

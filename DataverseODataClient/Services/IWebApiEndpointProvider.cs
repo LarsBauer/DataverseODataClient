@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataverseODataClient.Services
+namespace BauerApps.DataverseODataClient.Services
 {
     internal interface IWebApiEndpointProvider
     {

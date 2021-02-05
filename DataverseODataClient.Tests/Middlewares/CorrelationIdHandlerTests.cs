@@ -1,12 +1,12 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using DataverseODataClient.Middlewares;
-using DataverseODataClient.Services;
+using BauerApps.DataverseODataClient.Middlewares;
+using BauerApps.DataverseODataClient.Services;
 using FakeItEasy;
 using FluentAssertions;
 using Xunit;
 
-namespace DataverseODataClient.Tests.Middlewares
+namespace BauerApps.DataverseODataClient.Tests.Middlewares
 {
     public class CorrelationIdHandlerTests : DelegatingHandlerTest
     {

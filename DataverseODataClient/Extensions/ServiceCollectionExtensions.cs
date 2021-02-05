@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Net.Http;
-using DataverseODataClient.Auth;
-using DataverseODataClient.Middlewares;
-using DataverseODataClient.Services;
+using BauerApps.DataverseODataClient.Auth;
+using BauerApps.DataverseODataClient.Middlewares;
+using BauerApps.DataverseODataClient.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Simple.OData.Client;
 
-namespace DataverseODataClient.Extensions
+namespace BauerApps.DataverseODataClient.Extensions
 {
     public static class ServiceCollectionExtensions
     {

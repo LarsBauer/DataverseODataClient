@@ -2,9 +2,9 @@
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using DataverseODataClient.Auth;
+using BauerApps.DataverseODataClient.Auth;
 
-namespace DataverseODataClient.Middlewares
+namespace BauerApps.DataverseODataClient.Middlewares
 {
     internal class AuthorizationHeaderHandler : DelegatingHandler
     {

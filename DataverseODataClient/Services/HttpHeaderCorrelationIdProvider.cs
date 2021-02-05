@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace DataverseODataClient.Services
+namespace BauerApps.DataverseODataClient.Services
 {
     internal class HttpHeaderCorrelationIdProvider : ICorrelationIdProvider
     {

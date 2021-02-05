@@ -1,4 +1,4 @@
-﻿namespace DataverseODataClient.Services
+﻿namespace BauerApps.DataverseODataClient.Services
 {
     public interface ICorrelationIdProvider
     {

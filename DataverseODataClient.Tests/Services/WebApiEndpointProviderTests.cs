@@ -1,10 +1,10 @@
 ﻿using System;
-using DataverseODataClient.Services;
+using BauerApps.DataverseODataClient.Services;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Xunit;
 
-namespace DataverseODataClient.Tests.Services
+namespace BauerApps.DataverseODataClient.Tests.Services
 {
     public class WebApiEndpointProviderTests
     {
