@@ -1,7 +1,6 @@
 ﻿using System;
 using Azure.Core;
 using Azure.Identity;
-using DataverseODataClient.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace DataverseODataClient.Auth
