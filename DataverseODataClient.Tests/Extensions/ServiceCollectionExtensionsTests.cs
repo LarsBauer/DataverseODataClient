@@ -36,8 +36,6 @@ namespace BauerApps.DataverseODataClient.Tests.Extensions
             sut.Should().Contain(x => x.ServiceType == typeof(AuthorizationHeaderHandler));
             sut.Should().Contain(x => x.ServiceType == typeof(CorrelationIdHandler));
             sut.Should().Contain(x => x.ServiceType == typeof(IHttpClientFactory));
-            sut.Should().Contain(x =>
-                x.ServiceType == typeof(IODataClient) && x.ImplementationType == typeof(BauerApps.DataverseODataClient.DataverseODataClient));
         }
 
         [Fact]
@@ -78,8 +76,12 @@ namespace BauerApps.DataverseODataClient.Tests.Extensions
 
             // Assert
             var provider = sut.BuildServiceProvider();
+
+            var client = provider.GetRequiredService<IODataClient>();
+            client.Should().BeOfType<DataverseODataClient>();
+
             var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
-            var httpClient = httpClientFactory.CreateClient(nameof(BauerApps.DataverseODataClient.DataverseODataClient));
+            var httpClient = httpClientFactory.CreateClient(nameof(IODataClient));
 
             httpClient.BaseAddress.Should().Be("https://my-organization.crm4.dynamics.com/api/data/v9.1/");
         }

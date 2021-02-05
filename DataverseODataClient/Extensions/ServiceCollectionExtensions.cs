@@ -28,8 +28,8 @@ namespace BauerApps.DataverseODataClient.Extensions
             services.AddTransient<AuthorizationHeaderHandler>();
             services.AddTransient<CorrelationIdHandler>();
 
-            // configure HttpClient
-            services.AddHttpClient<DataverseODataClient>((serviceProvider, client) =>
+            // register OData client with preconfigured HttpClient
+            services.AddHttpClient<IODataClient, DataverseODataClient>((serviceProvider, client) =>
                 {
                     var endpointProvider = serviceProvider.GetRequiredService<IWebApiEndpointProvider>();
 
@@ -37,9 +37,6 @@ namespace BauerApps.DataverseODataClient.Extensions
                 })
                 .AddHttpMessageHandler<AuthorizationHeaderHandler>()
                 .AddHttpMessageHandler<CorrelationIdHandler>();
-
-            // register OData client
-            services.AddScoped<IODataClient, DataverseODataClient>();
 
             return services;
         }
