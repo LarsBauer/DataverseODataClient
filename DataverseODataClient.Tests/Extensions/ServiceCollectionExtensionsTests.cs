@@ -36,7 +36,7 @@ namespace DataverseODataClient.Tests.Extensions
             sut.Should().Contain(x => x.ServiceType == typeof(AuthorizationHeaderHandler));
             sut.Should().Contain(x => x.ServiceType == typeof(CorrelationIdHandler));
             sut.Should().Contain(x => x.ServiceType == typeof(ODataClientSettings));
-            sut.Should().Contain(x => x.ServiceType == typeof(HttpClient));
+            sut.Should().Contain(x => x.ServiceType == typeof(IHttpClientFactory));
             sut.Should().Contain(x =>
                 x.ServiceType == typeof(IODataClient) && x.ImplementationType == typeof(DataverseODataClient));
         }
