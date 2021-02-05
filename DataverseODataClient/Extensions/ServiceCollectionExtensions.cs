@@ -2,7 +2,9 @@
 using DataverseODataClient.Auth;
 using DataverseODataClient.Middlewares;
 using DataverseODataClient.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Simple.OData.Client;
 
 namespace DataverseODataClient.Extensions
@@ -17,6 +19,7 @@ namespace DataverseODataClient.Extensions
             // token provider
             services.AddSingleton<ITokenProvider, DataverseTokenProvider>();
             // correlation id provider
+            services.TryAddScoped<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<ICorrelationIdProvider, HttpHeaderCorrelationIdProvider>();
             // Web API endpoint provider
             services.AddSingleton<IWebApiEndpointProvider, WebApiEndpointProvider>();
