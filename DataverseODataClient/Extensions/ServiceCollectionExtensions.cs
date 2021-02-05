@@ -3,15 +3,12 @@ using DataverseODataClient.Auth;
 using DataverseODataClient.Middlewares;
 using DataverseODataClient.Services;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Simple.OData.Client;
 
 namespace DataverseODataClient.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        private const string WebApiPath = "/api/data/v9.1/";
-
         public static IServiceCollection AddDataverseODataClient(this IServiceCollection services,
             Action<DataverseODataClientOptions> options)
         {
@@ -19,18 +16,21 @@ namespace DataverseODataClient.Extensions
 
             // token provider
             services.AddSingleton<ITokenProvider, DataverseTokenProvider>();
-
             // correlation id provider
-            services.AddScoped<ICorrelationIdProvider, HttpHeaderCorrelationIdProvider>();
+            services.AddTransient<ICorrelationIdProvider, HttpHeaderCorrelationIdProvider>();
+            // Web API endpoint provider
+            services.AddSingleton<IWebApiEndpointProvider, WebApiEndpointProvider>();
 
             // outgoing request middlewares
             services.AddTransient<AuthorizationHeaderHandler>();
             services.AddTransient<CorrelationIdHandler>();
 
             // configure HttpClient
-            services.AddHttpClient<ODataClientSettings, ODataClientSettings>((provider, client) =>
+            services.AddHttpClient<ODataClientSettings, ODataClientSettings>((serviceProvider, client) =>
                 {
-                    client.BaseAddress = GetWebApiEndpoint(provider);
+                    var endpointProvider = serviceProvider.GetRequiredService<IWebApiEndpointProvider>();
+
+                    client.BaseAddress = endpointProvider.GetWebApiEndpoint();
                 })
                 .AddHttpMessageHandler<AuthorizationHeaderHandler>()
                 .AddHttpMessageHandler<CorrelationIdHandler>();
@@ -39,16 +39,6 @@ namespace DataverseODataClient.Extensions
             services.AddScoped<IODataClient, DataverseODataClient>();
 
             return services;
-        }
-
-        private static Uri GetWebApiEndpoint(IServiceProvider serviceProvider)
-        {
-            var options = serviceProvider.GetRequiredService<IOptions<DataverseODataClientOptions>>();
-            var organizationUrl = options.Value.OrganizationUrl;
-
-            return organizationUrl.LocalPath == WebApiPath
-                ? organizationUrl
-                : new Uri(organizationUrl, WebApiPath);
         }
     }
 }
