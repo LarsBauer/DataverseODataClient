@@ -1,71 +1,67 @@
 ﻿using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using DataverseODataClient.Middlewares;
+using DataverseODataClient.Services;
 using FakeItEasy;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using Xunit;
 
 namespace DataverseODataClient.Tests.Middlewares
 {
-    public class CorrelationIdHandlerTests
+    public class CorrelationIdHandlerTests : DelegatingHandlerTest
     {
         [Fact]
-        public async Task ShouldAddCorrelationIdAsQueryParameterWhenPresentInHttpHeader()
+        public async Task ShouldAddCorrelationIdAsQueryParameterWhenProvided()
         {
             // Arrange
-            var headers = new HeaderDictionary
-            {
-                { "x-correlation-id", "myCorrelationId" }
-            };
-
-            var httpContextAccessor = A.Fake<IHttpContextAccessor>();
-            A.CallTo(() => httpContextAccessor.HttpContext.Request.Headers)
-                .Returns(headers);
+            const string correlationId = "myCorrelationId";
+            var correlationIdProvider = A.Fake<ICorrelationIdProvider>();
+            A.CallTo(() => correlationIdProvider.GetCorrelationId())
+                .Returns(correlationId);
 
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
-            var fakeHandler = new FakeDelegatingHandler();
 
-            var sut = new CorrelationIdHandler(httpContextAccessor)
-            {
-                InnerHandler = fakeHandler
-            };
-
-            var invoker = new HttpMessageInvoker(sut);
+            var sut = new CorrelationIdHandler(correlationIdProvider);
 
             // Act
-            var _ = await invoker.SendAsync(request, CancellationToken.None);
+            var result = await InvokeAsync(sut, request);
 
             // Assert
-            fakeHandler.Request.RequestUri?.Query.Should().Contain("tag=myCorrelationId");
+            result.RequestUri?.Query.Should().Contain($"tag={correlationId}");
         }
 
         [Fact]
-        public async Task ShouldSkipExecutionWhenCorrelationIdIsNotPresentInHttpHeader()
+        public async Task ShouldSkipExecutionWhenCorrelationIdIsNotProvided()
         {
             // Arrange
-            var headers = new HeaderDictionary();
-
-            var httpContextAccessor = A.Fake<IHttpContextAccessor>();
-            A.CallTo(() => httpContextAccessor.HttpContext.Request.Headers)
-                .Returns(headers);
+            var correlationIdProvider = A.Fake<ICorrelationIdProvider>();
+            A.CallTo(() => correlationIdProvider.GetCorrelationId())
+                .Returns(null);
 
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
-            var fakeHandler = new FakeDelegatingHandler();
 
-            var sut = new CorrelationIdHandler(httpContextAccessor)
-            {
-                InnerHandler = fakeHandler
-            };
-
-            var invoker = new HttpMessageInvoker(sut);
+            var sut = new CorrelationIdHandler(correlationIdProvider);
 
             // Act
-            var _ = await invoker.SendAsync(request, CancellationToken.None);
+            var result = await InvokeAsync(sut, request);
 
             // Assert
-            fakeHandler.Request.RequestUri?.Query.Should().BeNullOrEmpty();
+            result.RequestUri?.Query.Should().BeNullOrEmpty();
+        }
+
+        [Fact]
+        public async Task ShouldSkipExecutionWhenNoProviderIsRegistered()
+        {
+            // Arrange
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
+
+            var sut = new CorrelationIdHandler();
+
+            // Act
+            var result = await InvokeAsync(sut, request);
+
+            // Assert
+            result.Should().BeEquivalentTo(request);
         }
     }
 }

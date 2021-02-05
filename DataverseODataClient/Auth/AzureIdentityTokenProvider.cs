@@ -5,7 +5,7 @@ using Azure.Core;
 
 namespace DataverseODataClient.Auth
 {
-    public abstract class AzureIdentityTokenProvider : ITokenProvider
+    internal abstract class AzureIdentityTokenProvider : ITokenProvider
     {
         private static readonly TimeSpan ExpirationThreshold = TimeSpan.FromMinutes(5);
 

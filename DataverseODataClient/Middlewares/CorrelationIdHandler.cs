@@ -2,28 +2,30 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using DataverseODataClient.Services;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace DataverseODataClient.Middlewares
 {
-    public class CorrelationIdHandler : DelegatingHandler
+    internal class CorrelationIdHandler : DelegatingHandler
     {
-        private const string CorrelationIdHeader = "x-correlation-id";
         private const string CorrelationIdQueryParameter = "tag";
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICorrelationIdProvider _provider;
 
-        public CorrelationIdHandler(IHttpContextAccessor httpContextAccessor)
+        public CorrelationIdHandler(ICorrelationIdProvider provider = null)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _provider = provider;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
+            // skip execution when no provider is registered
+            if (_provider == null) return base.SendAsync(request, cancellationToken);
+
             // extract correlation id from http headers
-            var correlationId = _httpContextAccessor.HttpContext?.Request.Headers[CorrelationIdHeader];
+            var correlationId = _provider.GetCorrelationId();
             if (string.IsNullOrWhiteSpace(correlationId)) return base.SendAsync(request, cancellationToken);
 
             // add correlation id as query parameter

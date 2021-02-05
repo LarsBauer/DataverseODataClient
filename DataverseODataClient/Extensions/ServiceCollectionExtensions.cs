@@ -1,8 +1,10 @@
 ﻿using System;
 using DataverseODataClient.Auth;
 using DataverseODataClient.Middlewares;
+using DataverseODataClient.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Simple.OData.Client;
 
 namespace DataverseODataClient.Extensions
@@ -16,6 +18,9 @@ namespace DataverseODataClient.Extensions
             // token provider
             services.AddSingleton<ITokenProvider, DataverseTokenProvider>();
 
+            // correlation id provider
+            services.AddScoped<ICorrelationIdProvider, HttpHeaderCorrelationIdProvider>();
+
             // outgoing request middlewares
             services.AddTransient<AuthorizationHeaderHandler>();
             services.AddTransient<CorrelationIdHandler>();
@@ -27,7 +32,7 @@ namespace DataverseODataClient.Extensions
                 })
                 .AddHttpMessageHandler<AuthorizationHeaderHandler>()
                 .AddHttpMessageHandler<CorrelationIdHandler>();
-            
+
             // register OData client
             services.AddScoped<IODataClient, DataverseODataClient>();
 

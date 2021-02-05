@@ -11,7 +11,7 @@ using Xunit;
 
 namespace DataverseODataClient.Tests.Middlewares
 {
-    public class AuthorizationHeaderHandlerTests
+    public class AuthorizationHeaderHandlerTests : DelegatingHandlerTest
     {
         [Fact]
         public async Task ShouldAddBearerTokenToAuthorizationHeader()
@@ -23,23 +23,17 @@ namespace DataverseODataClient.Tests.Middlewares
             A.CallTo(() => tokenProvider.GetTokenAsync(A<CancellationToken>._))
                 .Returns(accessToken);
 
-            var fakeHandler = new FakeDelegatingHandler();
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
 
-            var sut = new AuthorizationHeaderHandler(tokenProvider)
-            {
-                InnerHandler = fakeHandler
-            };
-
-            var invoker = new HttpMessageInvoker(sut);
+            var sut = new AuthorizationHeaderHandler(tokenProvider);
 
             // Act
-            var _ = await invoker.SendAsync(request, CancellationToken.None);
+            var result = await InvokeAsync(sut, request);
 
             // Assert
-            fakeHandler.Request.Headers.Authorization.Should().NotBeNull();
-            fakeHandler.Request.Headers.Authorization?.Scheme.Should().Be("Bearer");
-            fakeHandler.Request.Headers.Authorization?.Parameter.Should().Be(accessToken.Token);
+            result.Headers.Authorization.Should().NotBeNull();
+            result.Headers.Authorization?.Scheme.Should().Be("Bearer");
+            result.Headers.Authorization?.Parameter.Should().Be(accessToken.Token);
         }
     }
 }
