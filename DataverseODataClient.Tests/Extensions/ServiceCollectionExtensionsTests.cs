@@ -35,7 +35,6 @@ namespace DataverseODataClient.Tests.Extensions
                 x.ImplementationType == typeof(WebApiEndpointProvider));
             sut.Should().Contain(x => x.ServiceType == typeof(AuthorizationHeaderHandler));
             sut.Should().Contain(x => x.ServiceType == typeof(CorrelationIdHandler));
-            sut.Should().Contain(x => x.ServiceType == typeof(ODataClientSettings));
             sut.Should().Contain(x => x.ServiceType == typeof(IHttpClientFactory));
             sut.Should().Contain(x =>
                 x.ServiceType == typeof(IODataClient) && x.ImplementationType == typeof(DataverseODataClient));
@@ -80,7 +79,7 @@ namespace DataverseODataClient.Tests.Extensions
             // Assert
             var provider = sut.BuildServiceProvider();
             var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
-            var httpClient = httpClientFactory.CreateClient(nameof(ODataClientSettings));
+            var httpClient = httpClientFactory.CreateClient(nameof(DataverseODataClient));
 
             httpClient.BaseAddress.Should().Be("https://my-organization.crm4.dynamics.com/api/data/v9.1/");
         }

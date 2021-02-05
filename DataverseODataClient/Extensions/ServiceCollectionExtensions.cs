@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using DataverseODataClient.Auth;
 using DataverseODataClient.Middlewares;
 using DataverseODataClient.Services;
@@ -29,7 +30,7 @@ namespace DataverseODataClient.Extensions
             services.AddTransient<CorrelationIdHandler>();
 
             // configure HttpClient
-            services.AddHttpClient<ODataClientSettings, ODataClientSettings>((serviceProvider, client) =>
+            services.AddHttpClient<DataverseODataClient>((serviceProvider, client) =>
                 {
                     var endpointProvider = serviceProvider.GetRequiredService<IWebApiEndpointProvider>();
 

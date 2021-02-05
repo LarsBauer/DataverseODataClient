@@ -1,12 +1,13 @@
-﻿using Simple.OData.Client;
+﻿using System.Net.Http;
+using Simple.OData.Client;
 
 namespace DataverseODataClient
 {
     // this class is needed to enable dependency injection of ODataClientSettings
     public class DataverseODataClient : ODataClient
     {
-        public DataverseODataClient(ODataClientSettings clientSettings)
-            : base(clientSettings)
+        public DataverseODataClient(HttpClient httpClient)
+            : base(new ODataClientSettings(httpClient))
         {
         }
     }
