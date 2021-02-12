@@ -1,6 +1,6 @@
 # Dataverse OData Client
 
-This package provides a ready-to-use OData Client for [Microsoft Dataverse Web API](https://docs.microsoft.com/en-us/powerapps/developer/data-platform/webapi/overview).
+This NuGet package provides a ready-to-use OData Client for [Microsoft Dataverse Web API](https://docs.microsoft.com/en-us/powerapps/developer/data-platform/webapi/overview).
 
 ## Features
 
@@ -63,10 +63,10 @@ namespace DataverseODataClient.Sample.Controllers
         }
 
         [HttpGet]
-        public async Task<Person> Get(string id)
+        public async Task<Account> Get(string id)
         {
             return await _client
-                .For<Person>()
+                .For<Account>()
                 .Key(id)
                 .FindEntryAsync();
         }
