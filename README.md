@@ -1,5 +1,8 @@
 # Dataverse OData Client
 
+[![Build status](https://github.com/LarsBauer/DataverseODataClient/actions/workflows/dotnet.yml/badge.svg)](https://github.com/LarsBauer/DataverseODataClient/actions/workflows/dotnet.yml)
+[![NuGet Badge](https://buildstats.info/nuget/BauerApps.DataverseODataClient)](https://www.nuget.org/packages/BauerApps.DataverseODataClient/)
+
 This NuGet package provides a ready-to-use OData Client for [Microsoft Dataverse Web API](https://docs.microsoft.com/en-us/powerapps/developer/data-platform/webapi/overview).
 
 ## Features
@@ -82,3 +85,4 @@ You can configure Dataverse OData Client using `DataverseODateClientOptions`
 | ----------------------- | :------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | OrganizationUrl         |    ✔     | The base url of your Dataverse organization                                                                                                                                                                                                          |
 | ManagedIdentityClientId |          | When using a Azure user-assigned [managed identity](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview) for authentication you have to specify the client id of the corresponding managed identity. |
+| CorrelationIdHeader     |          | The name of the HTTP header which contains the correlation id. Defaults to `X-Correlation-Id`                                                                                                                                                        |
