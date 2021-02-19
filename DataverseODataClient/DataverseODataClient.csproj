@@ -10,7 +10,7 @@
         <RepositoryUrl>https://github.com/LarsBauer/DataverseODataClient.git</RepositoryUrl>
         <PackageProjectUrl>https://github.com/LarsBauer/DataverseODataClient</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageVersion>1.0.6</PackageVersion>
+        <PackageVersion>1.0.7</PackageVersion>
         <RootNamespace>BauerApps.DataverseODataClient</RootNamespace>
     </PropertyGroup>
 
