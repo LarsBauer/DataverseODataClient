@@ -79,7 +79,7 @@ namespace DataverseODataClient.Sample.Controllers
 
 ## Configuration
 
-You can configure Dataverse OData Client using `DataverseODateClientOptions`
+You can configure Dataverse OData Client using `DataverseODataClientOptions`
 
 | Option                  | Required | Description                                                                                                                                                                                                                                          |
 | ----------------------- | :------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
