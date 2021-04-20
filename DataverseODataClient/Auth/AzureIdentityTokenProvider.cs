@@ -41,12 +41,5 @@ namespace BauerApps.DataverseODataClient.Auth
         {
             return string.Join('|', scopes);
         }
-
-        private static bool IsAccessTokenExpired(AccessToken accessToken)
-        {
-            if (string.IsNullOrWhiteSpace(accessToken.Token)) return true;
-
-            return DateTime.UtcNow + ExpirationThreshold >= accessToken.ExpiresOn;
-        }
     }
 }
