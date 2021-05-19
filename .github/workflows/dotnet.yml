@@ -38,6 +38,7 @@ jobs:
       with:
         token: $CODECOV_TOKEN
         directory: "**/TestResults/*"
+        verbose: true
 
     - name: Pack
       run: dotnet pack --no-build --configuration $BUILD_CONFIGURATION --output ./nupkgs
