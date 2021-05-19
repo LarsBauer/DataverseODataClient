@@ -31,7 +31,13 @@ jobs:
       run: dotnet build --configuration $BUILD_CONFIGURATION
 
     - name: Test
-      run: dotnet test --no-build --configuration $BUILD_CONFIGURATION
+      run: dotnet test --no-build --configuration $BUILD_CONFIGURATION --collect:"XPlat Code Coverage"
+      
+    - name: Code coverage
+      uses: codecov/codecov-action@v1
+      with:
+        token: $CODECOV_TOKEN
+        directory: "**/TestResults/*"
 
     - name: Pack
       run: dotnet pack --no-build --configuration $BUILD_CONFIGURATION --output ./nupkgs
