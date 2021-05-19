@@ -1,6 +1,7 @@
 # Dataverse OData Client
 
 [![Build status](https://github.com/LarsBauer/DataverseODataClient/actions/workflows/dotnet.yml/badge.svg)](https://github.com/LarsBauer/DataverseODataClient/actions/workflows/dotnet.yml)
+[![codecov](https://codecov.io/gh/LarsBauer/DataverseODataClient/branch/main/graph/badge.svg?token=C0Y1VMP7YA)](https://codecov.io/gh/LarsBauer/DataverseODataClient)
 [![NuGet Badge](https://buildstats.info/nuget/BauerApps.DataverseODataClient)](https://www.nuget.org/packages/BauerApps.DataverseODataClient/)
 
 This NuGet package provides a ready-to-use OData Client for [Microsoft Dataverse Web API](https://docs.microsoft.com/en-us/powerapps/developer/data-platform/webapi/overview).
