@@ -7,7 +7,7 @@ namespace BauerApps.DataverseODataClient
     public class DataverseODataClient : ODataClient
     {
         public DataverseODataClient(HttpClient httpClient)
-            : base(new ODataClientSettings(httpClient))
+            : base(new ODataClientSettings(httpClient) { IgnoreUnmappedProperties = true })
         {
         }
     }
