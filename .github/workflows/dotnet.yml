@@ -12,20 +12,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+    - name: Checkout
+      uses: actions/checkout@v3.0.0
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v2.0.0
       with:
-        dotnet-version: 3.1.x
-      
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
+        dotnet-version: |
+          3.1.x
+          5.0.x
+          6.0.x
       
     - name: Setup NuGet.exe for use with actions
-      uses: NuGet/setup-nuget@v1.0.5
+      uses: NuGet/setup-nuget@v1.0.6
 
     - name: Build
       run: dotnet build --configuration $BUILD_CONFIGURATION
@@ -34,7 +33,7 @@ jobs:
       run: dotnet test --no-build --configuration $BUILD_CONFIGURATION --collect:"XPlat Code Coverage"
       
     - name: Code coverage
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3.0.0
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         directory: "**/TestResults/*"
