@@ -25,6 +25,8 @@ jobs:
       
     - name: Setup NuGet.exe for use with actions
       uses: NuGet/setup-nuget@v1.0.6
+      with:
+        nuget-api-key: ${{ secrets.NUGET_API_KEY }}
 
     - name: Build
       run: dotnet build --configuration $BUILD_CONFIGURATION
@@ -42,7 +44,5 @@ jobs:
       run: dotnet pack --no-build --configuration $BUILD_CONFIGURATION --output ./nupkgs
     
     - name: Push NuGet package
-      env:
-        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-      run: dotnet nuget push ./nupkgs/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY --skip-duplicate
+      run: dotnet nuget push ./nupkgs/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate
     
