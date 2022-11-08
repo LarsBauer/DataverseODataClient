@@ -4,14 +4,17 @@
 [![codecov](https://codecov.io/gh/LarsBauer/DataverseODataClient/branch/main/graph/badge.svg?token=C0Y1VMP7YA)](https://codecov.io/gh/LarsBauer/DataverseODataClient)
 [![NuGet Badge](https://buildstats.info/nuget/BauerApps.DataverseODataClient)](https://www.nuget.org/packages/BauerApps.DataverseODataClient/)
 
-This NuGet package provides a ready-to-use OData Client for [Microsoft Dataverse Web API](https://docs.microsoft.com/en-us/powerapps/developer/data-platform/webapi/overview).
+This NuGet package provides a ready-to-use OData Client
+for [Microsoft Dataverse Web API](https://docs.microsoft.com/en-us/powerapps/developer/data-platform/webapi/overview).
 
 ## Features
 
-- based on the very popular and feature-rich [Simple.OData.Client](https://github.com/simple-odata-client/Simple.OData.Client)
+- based on the very popular and
+  feature-rich [Simple.OData.Client](https://github.com/simple-odata-client/Simple.OData.Client)
 - seamless integration in dependency injection and configuration concepts of .NET
 - makes use of `IHttpClientFactory` to delegate `HttpClient` lifecycle to framework
-- token handling based on [Azure Identity](https://docs.microsoft.com/en-us/dotnet/api/overview/azure/identity-readme), which offers various ways to authenticate against Dataverse
+- token handling based on [Azure Identity](https://docs.microsoft.com/en-us/dotnet/api/overview/azure/identity-readme),
+  which offers various ways to authenticate against Dataverse
 - supports e2e-traceability of requests via correlation id
 - developed and targeted at Azure Functions and Azure Web Apps
 
@@ -46,7 +49,9 @@ namespace DataverseODataClient.Sample
 }
 ```
 
-... and inject it for example into your `Controller`. As mentioned above this client basically is a preconfigured version of `Simple.OData.Client`, which means you can use it the same way. If you are new to `Simple.OData.Client` head over to the [wiki](https://github.com/simple-odata-client/Simple.OData.Client/wiki) for available features.
+... and inject it for example into your `Controller`. As mentioned above this client basically is a preconfigured
+version of `Simple.OData.Client`, which means you can use it the same way. If you are new to `Simple.OData.Client` head
+over to the [wiki](https://github.com/simple-odata-client/Simple.OData.Client/wiki) for available features.
 
 ```csharp
 using System.Threading.Tasks;
@@ -86,4 +91,31 @@ You can configure Dataverse OData Client using `DataverseODataClientOptions`
 | ----------------------- | :------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | OrganizationUrl         |    ✔     | The base url of your Dataverse organization                                                                                                                                                                                                          |
 | ManagedIdentityClientId |          | When using a Azure user-assigned [managed identity](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview) for authentication you have to specify the client id of the corresponding managed identity. |
-| CorrelationIdHeader     |          | The name of the HTTP header which contains the correlation id. Defaults to `X-Correlation-Id`                                                                                                                                                        |
+
+### Correlation Id
+
+It is possible to pass a correlation id to Dataverse by registering a implementation of `ICorrelationIdProvider`. The id is then available as `tag` parameter in the shared variables. See Dataverse [docs](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/understand-the-data-context#passing-a-shared-variable-from-the-api) for details.
+
+```csharp
+// sample correlation id provider
+public class HttpHeaderCorrelationIdProvider : ICorrelationIdProvider
+{
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public HttpHeaderCorrelationIdProvider(IHttpContextAccessor httpContextAccessor)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
+
+    public string GetCorrelationId()
+    {
+        // extract correlation id from http header
+        return _httpContextAccessor.HttpContext?.Request.Headers["x-correlation-id"];
+    }
+}
+
+// register in Program.cs
+services.AddDataverseODataClient(options => { ... });
+
+services.AddTransient<ICorrelationIdProvider, HttpHeaderCorrelationIdProvider>();
+```

@@ -17,9 +17,7 @@ namespace BauerApps.DataverseODataClient.Extensions
             // token provider
             services.AddMemoryCache();
             services.AddScoped<ITokenProvider, DataverseTokenProvider>();
-            // correlation id provider
-            services.AddHttpContextAccessor();
-            services.AddTransient<ICorrelationIdProvider, HttpHeaderCorrelationIdProvider>();
+
             // Web API endpoint provider
             services.AddTransient<IWebApiEndpointProvider, WebApiEndpointProvider>();
 

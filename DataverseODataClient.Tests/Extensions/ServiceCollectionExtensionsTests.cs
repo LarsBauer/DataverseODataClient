@@ -27,9 +27,6 @@ namespace BauerApps.DataverseODataClient.Tests.Extensions
             sut.Should().Contain(x =>
                 x.ServiceType == typeof(ITokenProvider) && x.ImplementationType == typeof(DataverseTokenProvider));
             sut.Should().Contain(x =>
-                x.ServiceType == typeof(ICorrelationIdProvider) &&
-                x.ImplementationType == typeof(HttpHeaderCorrelationIdProvider));
-            sut.Should().Contain(x =>
                 x.ServiceType == typeof(IWebApiEndpointProvider) &&
                 x.ImplementationType == typeof(WebApiEndpointProvider));
             sut.Should().Contain(x => x.ServiceType == typeof(AuthorizationHeaderHandler));
